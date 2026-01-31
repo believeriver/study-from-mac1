@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import datetime
 from typing import List
 
+
 class Memento(ABC):
     @abstractmethod
     def get_memo(self) -> str:
