@@ -21,16 +21,7 @@ crypto key generate rsa modulus 2048
 service timestamps debug datetime msec
 service timestamps log datetime msec
 
-vlan 10
- name OFFICE
-
-vlan 20
- name SERVER
-
-vlan 99
- name MANAGEMENT
-
-exit
+vlan 10,247
 
 interface Vlan99
  ip address 192.168.99.2 255.255.255.0
