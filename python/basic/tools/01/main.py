@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class CreateConfig(object):
-    def __init__(self, template_file: str, devices_file: str):
-        self.template_file = template_file
-        self.devices_file = devices_file
+    def __init__(self, _template_file: str, _devices_file: str):
+        self.template_file = _template_file
+        self.devices_file = _devices_file
         self.template_config = []
         self.devices_list = {}
 
@@ -32,5 +32,14 @@ class CreateConfig(object):
     def run(self):
         self.import_template()
         self.import_input_list()
+
+
+if __name__ == '__main__':
+    template_file = 'template/2960L.txt'
+    devices_file = 'config/devices_file.txt'
+
+    create_config = CreateConfig(template_file, devices_file)
+    create_config.run()
+
 
 
