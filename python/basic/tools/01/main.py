@@ -51,6 +51,7 @@ class CreateConfig(object):
         key2 = 'vlan 10,247'
         key3 = 'switchport access vlan '
         key4 = 'ip address 192.168.99.2 255.255.255.0'
+        key5 = 'ip default-gateway 192.168.99.1'
 
         for device in self.devices_list:
             for item in self.template_config:
@@ -61,13 +62,18 @@ class CreateConfig(object):
                     self.created_config.append(f"vlan {device['DVLAN']} {device['MVLAN']}")
                     continue
                 if key3 in item:
-                    self.created_config.append(f"switchport access vlan {device['DVLAN']}")
+                    self.created_config.append(f" switchport access vlan {device['DVLAN']}")
                     continue
                 if key4 in item:
-                    self.created_config.append(f"ip address {device['IP']} 255.255.255.0")
+                    self.created_config.append(f" ip address {device['IP']} 255.255.255.0")
+                    continue
+                if key5 in item:
+                    self.created_config.append(f" ip default-gateway {device['GATEWAY']}")
                     continue
                 self.created_config.append(item)
-            print(self.created_config)
+
+            for check in self.created_config:
+                print(check)
 
     def run(self):
         self.import_template()
