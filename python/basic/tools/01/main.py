@@ -1,4 +1,12 @@
 from abc import ABC, abstractmethod
+import sys
+import logging
+
+logging.basicConfig(
+        stream=sys.stdout,
+        level=logging.INFO,
+        format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 
 class CreateConfig(object):
@@ -6,28 +14,40 @@ class CreateConfig(object):
         self.template_file = _template_file
         self.devices_file = _devices_file
         self.template_config = []
-        self.devices_list = {}
+        self.created_config = []
+        self.devices_list = []
 
     def import_template(self):
-        with open(self.template_file, encoding="utf-8") as f:
+        with open(self.template_file, 'r', encoding="utf-8") as f:
             for line in f:
                 line = line.rstrip("\n")
                 if not line:
                     continue
-                print(line)
+                # print(line)
                 self.template_config.append(line)
 
     def import_input_list(self):
-        with open(self.devices_file, encoding="utf-8") as f:
-            cnt = 0
-            for line in f:
+        with open(self.devices_file, 'r', encoding="utf-8") as f:
+            # header = f.readline().strip().split(",")
+            headers = []
+            device = {}
+            lines = f.readlines()
+            for cnt, line in enumerate(lines):
                 line = line.rstrip("\n")
+                items = line.split(",")
                 if cnt == 0:
-                    items = line.split(",")
                     for item in items:
                         print(item)
+                        headers.append(item)
+                else:
+                    for idx, item in enumerate(items):
+                        device[headers[idx]] = item
                 if not line:
                     continue
+                self.devices_list.append(device)
+
+    def create_new_config(self):
+        pass
 
     def run(self):
         self.import_template()
@@ -40,6 +60,8 @@ if __name__ == '__main__':
 
     create_config = CreateConfig(template_file, devices_file)
     create_config.run()
+    # print(create_config.template_config)
+    print(create_config.devices_list)
 
 
 
