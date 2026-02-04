@@ -30,21 +30,23 @@ class CreateConfig(object):
         with open(self.devices_file, 'r', encoding="utf-8") as f:
             # header = f.readline().strip().split(",")
             headers = []
-            device = {}
+
             lines = f.readlines()
             for cnt, line in enumerate(lines):
+                device = {}
                 line = line.rstrip("\n")
                 items = line.split(",")
                 if cnt == 0:
                     for item in items:
-                        print(item)
+                        # print(item)
                         headers.append(item)
                 else:
                     for idx, item in enumerate(items):
                         device[headers[idx]] = item
                 if not line:
                     continue
-                self.devices_list.append(device)
+                if device != {}:
+                    self.devices_list.append(device)
 
     def create_new_config(self):
         key1 = 'hostname SW-2960L-8TS'
@@ -54,26 +56,25 @@ class CreateConfig(object):
         key5 = 'ip default-gateway 192.168.99.1'
 
         for device in self.devices_list:
+            created_new_config = []
             for item in self.template_config:
                 if key1 in item:
-                    self.created_config.append(f"hostname {device['HOSTNAME']}")
+                    created_new_config.append(f"hostname {device['HOSTNAME']}")
                     continue
                 if key2 in item:
-                    self.created_config.append(f"vlan {device['DVLAN']} {device['MVLAN']}")
+                    created_new_config.append(f"vlan {device['DVLAN']} {device['MVLAN']}")
                     continue
                 if key3 in item:
-                    self.created_config.append(f" switchport access vlan {device['DVLAN']}")
+                    created_new_config.append(f" switchport access vlan {device['DVLAN']}")
                     continue
                 if key4 in item:
-                    self.created_config.append(f" ip address {device['IP']} 255.255.255.0")
+                    created_new_config.append(f" ip address {device['IP']} 255.255.255.0")
                     continue
                 if key5 in item:
-                    self.created_config.append(f" ip default-gateway {device['GATEWAY']}")
+                    created_new_config.append(f" ip default-gateway {device['GATEWAY']}")
                     continue
-                self.created_config.append(item)
-
-            for check in self.created_config:
-                print(check)
+                created_new_config.append(item)
+            self.created_config.append(created_new_config)
 
     def run(self):
         self.import_template()
@@ -87,8 +88,14 @@ if __name__ == '__main__':
 
     create_config = CreateConfig(template_file, devices_file)
     create_config.run()
-    # print(create_config.template_config)
-    print(create_config.devices_list)
 
+    for idx, config in enumerate(create_config.created_config):
+        print('=====', idx, '=====')
+        for c in config:
+            print(c)
+        print('')
+
+    for item in create_config.devices_list:
+        print(item)
 
 
