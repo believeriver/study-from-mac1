@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import sys
 import logging
 from typing import List
+import gc
 
 logging.basicConfig(
         stream=sys.stdout,
@@ -62,6 +63,7 @@ class CreateConfig(object):
         key3 = 'switchport access vlan '
         key4 = 'ip address 192.168.99.2 255.255.255.0'
         key5 = 'ip default-gateway 192.168.99.1'
+        key6 = 'interface Vlan99'
 
         for device in self.devices_list:
             created_new_config = []
@@ -80,6 +82,9 @@ class CreateConfig(object):
                     continue
                 if key5 in item:
                     created_new_config.append(f" ip default-gateway {device['GATEWAY']}")
+                    continue
+                if key6 in item:
+                    created_new_config.append(f" interface Vlan{device['MVLAN']}")
                     continue
                 created_new_config.append(item)
 
@@ -116,4 +121,5 @@ if __name__ == '__main__':
 
     main(template_file, devices_file, out_dir)
 
+    gc.collect()
 
