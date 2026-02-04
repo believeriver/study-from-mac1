@@ -82,20 +82,27 @@ class CreateConfig(object):
         self.create_new_config()
 
 
-if __name__ == '__main__':
-    template_file = 'template/2960L.txt'
-    devices_file = 'config/devices_file.txt'
+def main(_template: str, _devices: str) -> None:
 
-    create_config = CreateConfig(template_file, devices_file)
+    create_config = CreateConfig(_template, _devices)
     create_config.run()
 
+    print('check result')
+    print('< new config >')
     for idx, config in enumerate(create_config.created_config):
         print('=====', idx, '=====')
         for c in config:
             print(c)
         print('')
+    print('< device file >')
+    for dev_info in create_config.devices_list:
+        print(dev_info)
 
-    for item in create_config.devices_list:
-        print(item)
+
+if __name__ == '__main__':
+    template_file = 'template/2960L.txt'
+    devices_file = 'config/devices_file.txt'
+
+    main(template_file, devices_file)
 
 
