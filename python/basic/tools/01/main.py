@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import sys
 import logging
+from typing import List
 
 logging.basicConfig(
         stream=sys.stdout,
@@ -10,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 class CreateConfig(object):
-    def __init__(self, _template_file: str, _devices_file: str):
+    def __init__(self, _template_file: str, _devices_file: str, _out_dir: str):
         self.template_file = _template_file
         self.devices_file = _devices_file
+        self.out_dir = _out_dir
         self.template_config = []
         self.created_config = []
         self.devices_list = []
@@ -48,6 +50,12 @@ class CreateConfig(object):
                 if device != {}:
                     self.devices_list.append(device)
 
+    def write_config(self, _config: List, _hostname: str):
+        outfile = self.out_dir + '/' + _hostname
+        with open(outfile, "w", encoding="utf-8") as f:
+            for item in _config:
+                f.write(str(item) + "\n")
+
     def create_new_config(self):
         key1 = 'hostname SW-2960L-8TS'
         key2 = 'vlan 10,247'
@@ -74,7 +82,9 @@ class CreateConfig(object):
                     created_new_config.append(f" ip default-gateway {device['GATEWAY']}")
                     continue
                 created_new_config.append(item)
-            self.created_config.append(created_new_config)
+
+            self.write_config(created_new_config, device['HOSTNAME'])
+            # self.created_config.append(created_new_config)
 
     def run(self):
         self.import_template()
@@ -82,27 +92,28 @@ class CreateConfig(object):
         self.create_new_config()
 
 
-def main(_template: str, _devices: str) -> None:
+def main(_template: str, _devices: str, _out: str) -> None:
 
-    create_config = CreateConfig(_template, _devices)
+    create_config = CreateConfig(_template, _devices, _out)
     create_config.run()
 
     print('check result')
-    print('< new config >')
-    for idx, config in enumerate(create_config.created_config):
-        print('=====', idx, '=====')
-        for c in config:
-            print(c)
-        print('')
-    print('< device file >')
+    # print('< new config >')
+    # for idx, config in enumerate(create_config.created_config):
+    #     print('=====', idx, '=====')
+    #     for c in config:
+    #         print(c)
+    #     print('')
+    # print('< device file >')
     for dev_info in create_config.devices_list:
-        print(dev_info)
+        logger.info(dev_info)
 
 
 if __name__ == '__main__':
     template_file = 'template/2960L.txt'
     devices_file = 'config/devices_file.txt'
+    out_dir = 'out'
 
-    main(template_file, devices_file)
+    main(template_file, devices_file, out_dir)
 
 
