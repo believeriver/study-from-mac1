@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import sys
 import logging
+from datetime import datetime
 from typing import List
 import gc
 
@@ -52,7 +53,8 @@ class CreateConfig(object):
                     self.devices_list.append(device)
 
     def write_config(self, _config: List, _hostname: str):
-        outfile = self.out_dir + '/' + _hostname
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        outfile = self.out_dir + '/' + _hostname + '_' + timestamp + '.txt'
         with open(outfile, "w", encoding="utf-8") as f:
             for item in _config:
                 f.write(str(item) + "\n")
