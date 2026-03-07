@@ -38,15 +38,22 @@ def bucket_sort(numbers: List[int]):
         if index >= size:
             index = size - 1
         buckets[index].append(num)
-    print(buckets)
+
+    result = []
+    for items in buckets:
+        res_items = insertion_sort(items)
+        for res in res_items:
+            result.append(res)
+
+    return result
 
 
 if __name__ == '__main__':
     nums = [1, 5, 28, 25, 100, 52, 27, 91, 22, 99]
-    # bucket_sort(nums)
     print(nums)
+    print(bucket_sort(nums))
     # print(selection_sort(nums))
-    print(insertion_sort(nums))
+    # print(insertion_sort(nums))
 
 
 
