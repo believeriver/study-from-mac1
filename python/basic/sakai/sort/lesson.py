@@ -1,6 +1,3 @@
-# Bucket sort
-# split bucket and insertion sort in bucket
-
 from typing import List
 
 
@@ -30,8 +27,13 @@ def insertion_sort(numbers: List[int]) -> List[int]:
 
 
 def bucket_sort(numbers: List[int]):
+    """
+    # Bucket sort
+    # split bucket and insertion sort in bucket
+    """
+
     size = len(numbers)
-    buckets = [[] for n in range(size)]
+    buckets = [[] for _ in range(size)]
 
     for num in numbers:
         index = num // size
@@ -48,10 +50,34 @@ def bucket_sort(numbers: List[int]):
     return result
 
 
+def bucket_sort_answer(numbers: List[int]) -> List[int]:
+    max_num = max(numbers)
+    len_numbers = len(numbers)
+    size = max_num // len_numbers
+
+    buckets = [[] for _ in range(size)]
+    for num in numbers:
+        i = num // size
+        if i != size:
+            buckets[i].append(num)
+        else:
+            buckets[size-1].append(num)
+
+    for i in range(size):
+        insertion_sort(buckets[i])
+
+    result = []
+    for i in range(size):
+        result += buckets[i]
+
+    return result
+
+
 if __name__ == '__main__':
     nums = [1, 5, 28, 25, 100, 52, 27, 91, 22, 99]
     print(nums)
     print(bucket_sort(nums))
+    print(bucket_sort_answer(nums))
     # print(selection_sort(nums))
     # print(insertion_sort(nums))
 
