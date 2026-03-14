@@ -91,6 +91,26 @@ def counting_sort(numbers: List[int]) -> List[int]:
         # print("result", result)
         counters[num] -= 1
         # print("counters", counters)
+    return result
+
+
+def counting_sort_answer(numbers: List[int]) -> List[int]:
+    max_num = max(numbers)
+    counts = [0] * (max_num + 1)
+    result = [0] * len(numbers)
+
+    for num in numbers:
+        counts[num] += 1
+
+    for i in range(1, len(counts)):
+        counts[i] += counts[i-1]
+
+    i = len(numbers) - 1
+    while i >= 0:
+        index = numbers[i]
+        result[counts[index]-1] = numbers[i]
+        counts[index] -= 1
+        i -= 1
 
     return result
 
@@ -104,6 +124,7 @@ if __name__ == '__main__':
     # print(insertion_sort(nums))
 
     print(counting_sort(nums))
+    print(counting_sort_answer(nums))
 
 
 
