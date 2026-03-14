@@ -73,13 +73,21 @@ def bucket_sort_answer(numbers: List[int]) -> List[int]:
     return result
 
 
+def counting_sort(numbers: List[int]) -> List[int]:
+    len_numbers = len(numbers)
+    counter = [[] for _ in range(len_numbers+1)]
+    print(len(counter))
+
+
 if __name__ == '__main__':
-    nums = [1, 5, 28, 25, 100, 52, 27, 91, 22, 99]
+    nums = [4, 3, 6, 2, 3, 4, 7]
     print(nums)
-    print(bucket_sort(nums))
-    print(bucket_sort_answer(nums))
+    # print(bucket_sort(nums))
+    # print(bucket_sort_answer(nums))
     # print(selection_sort(nums))
     # print(insertion_sort(nums))
+
+    counting_sort(nums)
 
 
 
