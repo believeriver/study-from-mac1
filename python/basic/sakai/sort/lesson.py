@@ -115,16 +115,50 @@ def counting_sort_answer(numbers: List[int]) -> List[int]:
     return result
 
 
+def radix_sort_answer(numbers: List[int]) -> List[int]:
+    def _counting_sort(_numbers: List[int], _place: int) -> List[int]:
+        counts = [0] * 10
+        result = [0] * len(numbers)
+
+        for num in numbers:
+            index = int(num / place) % 10
+            # print(index)
+            counts[index] += 1
+
+        # print(counts)
+        for i in range(1, 10):
+            counts[i] += counts[i-1]
+
+        # print(counts)
+        i = len(numbers) - 1
+        while i >= 0:
+            index = int(numbers[i]/place) % 10
+            result[counts[index]-1] = numbers[i]
+            counts[index] -= 1
+            i -= 1
+
+        return result
+
+    max_num = max(numbers)
+    place = 1
+    while max_num > place:
+        numbers = _counting_sort(numbers, place)
+        place *= 10
+    return numbers
+
+
 if __name__ == '__main__':
-    nums = [4, 3, 6, 2, 3, 4, 7]
+    nums = [24, 10, 11, 324, 201, 101, 55]
     print(nums)
     # print(bucket_sort(nums))
     # print(bucket_sort_answer(nums))
     # print(selection_sort(nums))
     # print(insertion_sort(nums))
 
-    print(counting_sort(nums))
-    print(counting_sort_answer(nums))
+    # print(counting_sort(nums))
+    # print(counting_sort_answer(nums))
+
+    print(radix_sort_answer(nums))
 
 
 
