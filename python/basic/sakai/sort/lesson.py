@@ -147,8 +147,30 @@ def radix_sort_answer(numbers: List[int]) -> List[int]:
     return numbers
 
 
+def partition(numbers: List[int], low: int, high: int) -> int:
+    i = low - 1
+    pivot = numbers[high]
+    for j in range(low, high):
+        if numbers[j] <= pivot:
+            i += 1
+            numbers[i], numbers[j] = numbers[j], numbers[i]
+    numbers[i+1], numbers[high] = numbers[high], numbers[i+1]
+    return i+1
+
+
+def quick_sort(numbers: List[int]) -> List[int]:
+    def _quick_sort(_numbers: List[int], low: int, high: int) -> None:
+        if low < high:
+            partition_index = partition(numbers, low, high)
+            _quick_sort(numbers, low, partition_index-1)
+            _quick_sort(numbers, partition_index+1, high)
+
+    _quick_sort(numbers, 0, len(numbers)-1)
+    return numbers
+
+
 if __name__ == '__main__':
-    nums = [24, 10, 11, 324, 201, 101, 55]
+    nums = [1, 8, 3, 9, 4, 5, 7]
     print(nums)
     # print(bucket_sort(nums))
     # print(bucket_sort_answer(nums))
@@ -158,7 +180,8 @@ if __name__ == '__main__':
     # print(counting_sort(nums))
     # print(counting_sort_answer(nums))
 
-    print(radix_sort_answer(nums))
+    # print(radix_sort_answer(nums))
+    print(quick_sort(nums))
 
 
 
