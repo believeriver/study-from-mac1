@@ -169,6 +169,16 @@ def quick_sort(numbers: List[int]) -> List[int]:
     return numbers
 
 
+def quick_sort_2(numbers: List[int]) -> List[int]:
+    def _partition(_numbers: List[int], high: int, low: int) -> int:
+        pass
+
+    def _quick_sort(_numbers: List[int], _high: int, _low:int):
+        pass
+
+
+
+
 if __name__ == '__main__':
     nums = [1, 8, 3, 9, 4, 5, 7]
     print(nums)
