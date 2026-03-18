@@ -171,12 +171,23 @@ def quick_sort(numbers: List[int]) -> List[int]:
 
 def quick_sort_2(numbers: List[int]) -> List[int]:
     def _partition(_numbers: List[int], high: int, low: int) -> int:
-        pass
+        pivot = _numbers[high]
+        i = low - 1
+        for j in range(len(_numbers)):
+            if _numbers[j] >= pivot:
+                i += 1
+                _numbers[i], _numbers[j] = _numbers[i], _numbers[j]
+        numbers[i+1], numbers[high] = numbers[high], numbers[i]
+        return i+1
 
     def _quick_sort(_numbers: List[int], _high: int, _low:int):
-        pass
+        if _low < _high:
+            index = _partition(_numbers, _high, _low)
+            _quick_sort(_numbers, index+1, _high)
+            _quick_sort(_numbers, _low, index-1)
 
-
+    _quick_sort(numbers, 0, len(numbers)-1)
+    return numbers
 
 
 if __name__ == '__main__':
@@ -192,6 +203,7 @@ if __name__ == '__main__':
 
     # print(radix_sort_answer(nums))
     print(quick_sort(nums))
+    print(quick_sort_2(nums))
 
 
 
